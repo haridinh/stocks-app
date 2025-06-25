@@ -2,6 +2,15 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\DemoMiddleware;
+use App\Http\Middleware\Inactive;
+use App\Http\Middleware\isEmailVerified;
+use App\Http\Middleware\IsInstalled;
+use App\Http\Middleware\KycMiddleware;
+use App\Http\Middleware\LoginSecurityMiddleware;
+use App\Http\Middleware\RedirectIfAdmin;
+use App\Http\Middleware\RedirectIfNotAdmin;
+use App\Http\Middleware\RegistrationOff;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -11,7 +20,7 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
-     * @var array
+     * @var array<int, class-string|string>
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
@@ -26,7 +35,7 @@ class Kernel extends HttpKernel
     /**
      * The application's route middleware groups.
      *
-     * @var array
+     * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -40,6 +49,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -50,7 +60,7 @@ class Kernel extends HttpKernel
      *
      * These middleware may be assigned to groups or used individually.
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -62,5 +72,15 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'installed' => IsInstalled::class,
+        'admin' => RedirectIfNotAdmin::class,
+        'admin.guest' => RedirectIfAdmin::class,
+        'demo' => DemoMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'reg_off' => RegistrationOff::class,
+        'inactive' => Inactive::class,
+        'is_email_verified' => isEmailVerified::class,
+        '2fa' => LoginSecurityMiddleware::class,
+        'kyc' => KycMiddleware::class,
     ];
 }
