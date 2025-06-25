@@ -4,17 +4,15 @@ namespace App\Utility;
 
 use Illuminate\Support\Str;
 
-
-class FormBuilder
+class SectionBuilder
 {
 
-    public static function render($section, $content = [], $type = 'content')
+    public static function render($section)
     {
-
+      
         $class = self::classMap($section);
 
-
-        return $class->generateHtml($content, $section, $type);
+        return $class->sectionHtml($section);
     }
 
     public static function classMap($request)
