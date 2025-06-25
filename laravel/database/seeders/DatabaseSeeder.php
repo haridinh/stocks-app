@@ -13,6 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
+        $this->call([
+            // AdminSeeder::class,
+            // ConfigurationSeeder::class,
+            // GatewaySeeder::class,
+            // WithdrawGatewaySeeder::class,
+            // RolePermission::class,
+            EmailTemplateSeeder::class
+        ]);
     }
 }
